@@ -1,0 +1,24 @@
+{
+  "name": "petstory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && nodemon server.js",
+    "build:frontend": "cd frontend && npm run build",
+    "start:frontend": "cd frontend && serve -s build",
+    "start:backend": "cd backend && node server.js",
+    "start:production": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4",
+    "serve": "^14.2.3"
+  }
+}
