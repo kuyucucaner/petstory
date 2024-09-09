@@ -3,21 +3,33 @@ const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const connectDB = require('./config/db'); // DB konfigurasyonu
+const { swaggerUi, swaggerSpec } = require('./config/swagger'); // Swagger Dokumantasyonu
+const rateLimiter = require('./config/rate-limit'); // Fazla İstek Koruması !!
+const xss = require('xss-clean'); // Cross Site Scripting Koruması !!
+const hpp = require('hpp'); // HTTP Parametre Kirlenmesine Karşı Koruma
+const compression = require('compression'); // Gzip Sıkıştırması
+
 require('dotenv').config();
 
-
+connectDB();
 // Uygulama oluşturma
 const app = express();
 
 // Orta katmanlar (middlewares)
 app.use(express.json());
 app.use(cors());
+app.use(xss());
+app.use(hpp());
+app.use(compression());
 
 
 app.use(helmet());
 
-app.use(morgan('tiny'));
+app.use(morgan('dev'));
+app.use(rateLimiter);
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Frontend build klasörünü backend üzerinden sunma
 app.use(express.static(path.join(__dirname, '../frontend/build')));
