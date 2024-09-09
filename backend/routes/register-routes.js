@@ -86,7 +86,7 @@ const register = require('../controllers/register-controller');
  *                   description: Sunucu hatası
  */
 
-// @route   POST /api/auth/register
+// @route   POST /api/v1/register
 // @desc    Kullanıcı kaydı
 // @access  Public
 router.post('/', register);
