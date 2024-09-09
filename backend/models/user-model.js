@@ -2,6 +2,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
+  googleId: {
+    type: String,
+    unique: true,
+    required: true,
+    sparse: true // Google ile giriş yapanlar için optional
+
+  },
   firstName: {
     type: String,
     required: true,
@@ -21,15 +28,15 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
     minlength: 6,
     select: false // Sorgularda şifreyi getirmemek için
   },
   phone: {
     type: String,
-    required: true,
     unique: true,
-    trim: true
+    trim: true,
+    sparse: true // Google ile giriş yapanlar için telefon opsiyonel
+
   },
   role: {
     type: String,
@@ -37,7 +44,7 @@ const userSchema = new mongoose.Schema({
     default: 'user'
   },
   photo: {
-    type: String, // Fotoğraf URL'si
+    type: String, 
     default: 'default.jpg'
   },
   address: {
@@ -68,7 +75,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Şifreyi kaydetmeden önce hashleyelim
+
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
@@ -78,7 +85,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// Şifre doğrulama metodu
+
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

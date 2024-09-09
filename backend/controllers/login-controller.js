@@ -10,7 +10,7 @@ const login = async (req, res) => {
       if (!user) {
         return res.status(400).json({ message: 'Geçersiz email girdiniz.' });
       }
-      // Şifreyi doğrula
+
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(400).json({ message: 'Geçersiz şifre girdiniz.' });

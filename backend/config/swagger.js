@@ -1,7 +1,7 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-// Swagger seçenekleri
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -12,11 +12,11 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000', // Sunucu URL'si
+        url: 'http://localhost:5000', 
       },
     ],
   },
-  apis: ['./routes/*.js'], // Swagger'ın dokümantasyonu çekmesi gereken dosyalar
+  apis: ['./routes/*.js'], 
 };
 
 const swaggerSpec = swaggerJsdoc(options);
