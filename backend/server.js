@@ -9,6 +9,7 @@ const rateLimiter = require('./config/rate-limit'); // Fazla İstek Koruması !!
 const xss = require('xss-clean'); // Cross Site Scripting Koruması !!
 const hpp = require('hpp'); // HTTP Parametre Kirlenmesine Karşı Koruma
 const compression = require('compression'); // Gzip Sıkıştırması
+const registerRoutes = require('./routes/register-routes');
 
 require('dotenv').config();
 
@@ -22,6 +23,10 @@ app.use(cors());
 app.use(xss());
 app.use(hpp());
 app.use(compression());
+
+//Routes 
+app.use('/api/v1/register', registerRoutes);
+
 
 
 app.use(helmet());
