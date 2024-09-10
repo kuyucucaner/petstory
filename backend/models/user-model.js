@@ -2,6 +2,24 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
+  twitterId: {
+    type: String,
+    unique: true,
+    required: true,
+    sparse: true // Google ile giriş yapanlar için optional
+  },
+  instagramId: {
+    type: String,
+    unique: true,
+    required: true,
+    sparse: true // Google ile giriş yapanlar için optional
+  },
+  facebookId: {
+    type: String,
+    unique: true,
+    required: true,
+    sparse: true // Google ile giriş yapanlar için optional
+  },
   googleId: {
     type: String,
     unique: true,
@@ -40,7 +58,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin'],
+    enum: ['user', 'admin' , 'guest'],
     default: 'user'
   },
   photo: {
