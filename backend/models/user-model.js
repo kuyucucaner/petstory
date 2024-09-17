@@ -5,25 +5,25 @@ const userSchema = new mongoose.Schema({
   twitterId: {
     type: String,
     unique: true,
-    required: true,
+    required: false,
     sparse: true // Google ile giriş yapanlar için optional
   },
   instagramId: {
     type: String,
     unique: true,
-    required: true,
+    required: false,
     sparse: true // Google ile giriş yapanlar için optional
   },
   facebookId: {
     type: String,
     unique: true,
-    required: true,
+    required: false,
     sparse: true // Google ile giriş yapanlar için optional
   },
   googleId: {
     type: String,
     unique: true,
-    required: true,
+    required: false,
     sparse: true // Google ile giriş yapanlar için optional
 
   },
