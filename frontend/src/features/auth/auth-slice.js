@@ -1,6 +1,5 @@
 // src/features/auth/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// src/features/auth/authSlice.js
 import axiosInstance from '../../utils/axios-config';
 
 export const registerUser = createAsyncThunk(
@@ -9,6 +8,20 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axiosInstance.post('/api/v1/register', userData);
       localStorage.setItem('token', response.data.token);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+// Login işlemi
+export const loginUser = createAsyncThunk(
+  'auth/loginUser',
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post('/api/v1/login', userData);
+      localStorage.setItem('token', response.data.token); // Token'ı localStorage'a kaydediyoruz
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -49,6 +62,19 @@ const authSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Kayıt başarısız';
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Giriş başarısız';
       });
   },
 });
