@@ -29,12 +29,12 @@ const userSchema = new mongoose.Schema({
   },
   firstName: {
     type: String,
-    required: true,
+    required: false,
     trim: true
   },
   lastName: {
     type: String,
-    required: true,
+    required: false,
     trim: true
   },
   email: {
@@ -51,11 +51,12 @@ const userSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    unique: true,
+    required: false,
+    unique: false, // Artık unique değil
     trim: true,
-    sparse: true // Google ile giriş yapanlar için telefon opsiyonel
-
+    sparse: true, // Telefon numarası olan kullanıcılar için indeksleme yap
   },
+  
   role: {
     type: String,
     enum: ['user', 'admin' , 'guest'],

@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../features/auth/auth-slice';
+import GoogleLoginButton from '../components/google-login-button';  // Google butonunu ekledik
+
+
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -30,32 +33,40 @@ const Login = () => {
   }, [isAuthenticated]);
 
   return (
-    <form onSubmit={onSubmit}>
+    <div>
+      <form onSubmit={onSubmit}>
+        <div>
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={onChange}
+            placeholder="E-posta"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={onChange}
+            placeholder="Şifre"
+            required
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
+        </button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      </form>
+
+      {/* Google ile giriş */}
       <div>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={onChange}
-          placeholder="E-posta"
-          required
-        />
+        <p>Veya Google ile giriş yap:</p>
+        <GoogleLoginButton />  {/* Google giriş butonunu burada gösteriyoruz */}
       </div>
-      <div>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={onChange}
-          placeholder="Şifre"
-          required
-        />
-      </div>
-      <button type="submit" disabled={loading}>
-        {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
-      </button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+    </div>
   );
 };
 
