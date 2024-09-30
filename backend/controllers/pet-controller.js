@@ -5,15 +5,15 @@ const User = require('../models/user-model'); // Eğer kullanıcıya referans ve
 const PetController = {
 
     createPet : async function (req, res) {
-      const { name, species, breed, age, gender, owner } = req.body;
+      const { name, species, breed, age, gender, ownerId } = req.body;
     
       try {
         // Kullanıcının olup olmadığını kontrol et
-        const user = await User.findById(owner);
+        const user = await User.findById(ownerId);
         if (!user) {
           return res.status(404).json({ message: 'Owner not found' });
-        }
-    
+          }
+          console.log('Request Body: ', req.body);
         // Yeni evcil hayvan oluştur
         const newPet = new Pet({
           name,
@@ -21,7 +21,7 @@ const PetController = {
           breed,
           age,
           gender,
-          owner
+          ownerId
         });
     
         const savedPet = await newPet.save();
@@ -34,7 +34,7 @@ const PetController = {
     // Tüm evcil hayvanları listeleme
     getAllPets : async function (req, res)  {
       try {
-        const pets = await Pet.find().populate('owner', 'firstName lastName email'); // Sahip bilgilerini de çekiyoruz
+        const pets = await Pet.find().populate('ownerId', 'firstName lastName email'); // Sahip bilgilerini de çekiyoruz
         res.status(200).json(pets);
       } catch (error) {
         res.status(500).json({ message: 'Error fetching pets', error });
@@ -46,7 +46,7 @@ const PetController = {
       const { id } = req.params;
     
       try {
-        const pet = await Pet.findById(id).populate('owner', 'firstName lastName email');
+        const pet = await Pet.findById(id).populate('ownerId', 'firstName lastName email');
         if (!pet) {
           return res.status(404).json({ message: 'Pet not found' });
         }

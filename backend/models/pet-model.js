@@ -25,7 +25,7 @@ const petSchema = new mongoose.Schema({
     enum: ['male', 'female', 'unknown'], // Cinsiyet
     default: 'unknown'
   },
-  owner: {
+  ownerId: {
     type: mongoose.Schema.Types.ObjectId, // Sahip bilgisi
     ref: 'User', // Eğer kullanıcı modelin varsa bu şekilde referanslayabilirsin
     required: true

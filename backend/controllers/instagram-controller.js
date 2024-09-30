@@ -1,1 +1,0 @@
-//burası google gibi doldurulacak!

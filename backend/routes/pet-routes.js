@@ -24,7 +24,7 @@ const PetController = require('../controllers/pet-controller');
  *         gender:
  *           type: string
  *           description: Pet's gender
- *         owner:
+ *         ownerId:
  *           type: string
  *           description: ID of the pet's owner
  *         medicalRecords:
@@ -69,7 +69,7 @@ const PetController = require('../controllers/pet-controller');
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Pet'
+ *             $ref: '#/components/schemas/PetSchema'
  *     responses:
  *       201:
  *         description: Pet created successfully

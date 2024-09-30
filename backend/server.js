@@ -15,17 +15,14 @@ const compression = require('compression'); // Gzip Sıkıştırması
 
 require('dotenv').config();
 require('./config/google-passport');
-require('./config/facebook-passport');
-require('./config/twitter-passport');
-require('./config/instagram-passport');
+
 
 // Routes References
 const registerRoutes = require('./routes/register-routes');
 const loginRoutes = require('./routes/login-routes');
 const googleRoutes = require('./routes/google-routes');
-const facebookRoutes = require('./routes/facebook-routes');
-const instagramRoutes = require('./routes/instagram-routes');
-const twitterRoutes = require('./routes/twitter-routes');
+const petRoutes = require('./routes/pet-routes');
+
 
 connectDB();
 // Uygulama oluşturma
@@ -53,10 +50,8 @@ app.use(passport.session());
 //Routes 
 app.use('/api/v1/register', registerRoutes);
 app.use('/api/v1/login', loginRoutes);
+app.use('/api/v1/pet', petRoutes);
 app.use(googleRoutes);
-app.use(facebookRoutes);
-app.use(instagramRoutes);
-app.use(twitterRoutes);
 
 
 
