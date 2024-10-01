@@ -93,7 +93,7 @@ const PetController = require('../controllers/pet-controller');
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Pet'
+ *                 $ref: '#/components/schemas/PetSchema'
  *       500:
  *         description: Error fetching pets
  */
@@ -117,7 +117,7 @@ const PetController = require('../controllers/pet-controller');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Pet'
+ *               $ref: '#/components/schemas/PetSchema'
  *       404:
  *         description: Pet not found
  *       500:
@@ -142,7 +142,7 @@ const PetController = require('../controllers/pet-controller');
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Pet'
+ *             $ref: '#/components/schemas/PetSchema'
  *     responses:
  *       200:
  *         description: Pet updated successfully
@@ -173,6 +173,7 @@ const PetController = require('../controllers/pet-controller');
  *       500:
  *         description: Error deleting pet
  */
+
 
 /**
  * @swagger

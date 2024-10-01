@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPets } from '../features/pet/pet-slice';
+import { fetchPets  } from '../features/pet/pet-slice';
+import { useNavigate } from 'react-router-dom';
+
 import CreatePetForm from '../components/create-pet-form';
 
 const PetList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { pets, status, error } = useSelector((state) => state.pet);
 
   useEffect(() => {
@@ -15,7 +19,10 @@ const PetList = () => {
 
   if (status === 'loading') return <div>Loading...</div>;
   if (status === 'failed') return <div>Error: {error}</div>;
-
+  
+  const handleViewDetails = (petId) => {
+    navigate(`/pet/${petId}`);
+  };
   return (
     <div>
       <h1>Evcil Hayvanlar</h1>
@@ -23,6 +30,8 @@ const PetList = () => {
         {pets.map((pet) => (
           <li key={pet._id}>
             {pet.name} - {pet.species}
+            <button onClick={() => handleViewDetails(pet._id)}>Detayları Gör</button>
+
           </li>
         ))}
       </ul>

@@ -83,22 +83,22 @@ const PetController = {
       }
     },
     
-    // Evcil hayvanı silme
-    deletePet : async  function (req, res)  {
-      const { id } = req.params;
-    
-      try {
-        const pet = await Pet.findById(id);
-        if (!pet) {
-          return res.status(404).json({ message: 'Pet not found' });
-        }
-    
-        await pet.remove();
-        res.status(200).json({ message: 'Pet deleted successfully' });
-      } catch (error) {
-        res.status(500).json({ message: 'Error deleting pet', error });
-      }
-    },
+  // Evcil hayvanı silme
+deletePet: async function (req, res) {
+  const { id } = req.params;
+
+  try {
+    const pet = await Pet.findByIdAndDelete(id);
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
+    res.status(200).json({ message: 'Pet deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting pet', error });
+  }
+},
+
     
     // Tıbbi kayıt ekleme
     addMedicalRecord : async  function (req, res)  {

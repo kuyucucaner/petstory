@@ -35,6 +35,7 @@ const petSlice = createSlice({
   name: 'pets',
   initialState: {
     pets: [],
+    selectedPet: null,
     status: 'idle',
     error: null,
   },
@@ -55,6 +56,7 @@ const petSlice = createSlice({
       })
       // Tek bir evcil hayvanı fetch işlemleri
       .addCase(fetchPetById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
         state.selectedPet = action.payload;
       })
       // Evcil hayvan ekleme
