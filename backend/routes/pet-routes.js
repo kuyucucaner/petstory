@@ -203,7 +203,7 @@ const PetController = require('../controllers/pet-controller');
  *               vet:
  *                 type: string
  *     responses:
- *       200:
+ *       201:
  *         description: Medical record added successfully
  *       404:
  *         description: Pet not found

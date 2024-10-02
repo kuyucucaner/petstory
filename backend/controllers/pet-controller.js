@@ -120,31 +120,38 @@ deletePet: async function (req, res) {
     
         pet.medicalRecords.push(newMedicalRecord);
         const updatedPet = await pet.save();
-        res.status(200).json(updatedPet);
+        res.status(201).json(updatedPet);
       } catch (error) {
         res.status(500).json({ message: 'Error adding medical record', error });
       }
     },
     
-    // Tıbbi kayıt silme
-    deleteMedicalRecord : async  function (req, res)  {
-      const { petId, recordId } = req.params; // Evcil hayvan ve kayıt ID'leri
-    
-      try {
-        const pet = await Pet.findById(petId);
-        if (!pet) {
-          return res.status(404).json({ message: 'Pet not found' });
-        }
-    
-        // Tıbbi kaydı sil
-        pet.medicalRecords = pet.medicalRecords.filter(record => record._id.toString() !== recordId);
-        const updatedPet = await pet.save();
-    
-        res.status(200).json(updatedPet);
-      } catch (error) {
-        res.status(500).json({ message: 'Error deleting medical record', error });
-      }
-    },
+// Tıbbi kayıt silme
+deleteMedicalRecord: async function (req, res) {
+  const { petId, recordId } = req.params; // Evcil hayvan ve kayıt ID'leri
+
+  try {
+    const pet = await Pet.findById(petId);
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
+    // Tıbbi kaydı sil
+    const initialLength = pet.medicalRecords.length;
+    pet.medicalRecords = pet.medicalRecords.filter(record => record._id.toString() !== recordId);
+
+    if (pet.medicalRecords.length === initialLength) {
+      return res.status(404).json({ message: 'Medical record not found' });
+    }
+
+    const updatedPet = await pet.save();
+
+    res.status(200).json(updatedPet); // 204 No Content yerine 200 OK kullanıldı, çünkü silinen kayıtları döndürüyoruz.
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting medical record', error });
+  }
+},
+
 };
 
 module.exports = PetController;
