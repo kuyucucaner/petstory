@@ -6,6 +6,7 @@ import Home from './pages/home';
 import Register from './pages/register';
 import Login from './pages/login';
 import Pet from './pages/pet';
+import Item from './pages/item';
 import PetDetail from './pages/pet-detail';
 
 function App() {
@@ -13,15 +14,15 @@ function App() {
     <Router>
       <div>
         <main>
-      <Navbar />
+        <Navbar />
           <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/pet" element={<Pet />} />
+          <Route path="/item" element={<Item />} />
           <Route path="/pet/:petId" element={<PetDetail />} />
           <Route path="/pet/:petId/update" element={<UpdatePetForm />} />
-
           </Routes>
         </main>
       </div>
