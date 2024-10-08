@@ -38,7 +38,7 @@ const itemSchema = new mongoose.Schema({
     {
       url: {
         type: String,
-        required: true
+        required: false
       },
       altText: {
         type: String

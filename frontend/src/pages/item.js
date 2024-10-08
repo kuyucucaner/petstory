@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchItems } from '../features/item/item-slice';
 import { useNavigate } from 'react-router-dom';
+import CreateItemForm from '../components/create-item-form';
 
 const ItemList = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const ItemList = () => {
           <li>No items available</li>
         )}
       </ul>
+      <CreateItemForm />
     </div>
   );
 };
