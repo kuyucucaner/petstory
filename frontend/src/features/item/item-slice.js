@@ -6,6 +6,14 @@ export const fetchItems = createAsyncThunk("items/fetchItems", async () => {
   const response = await axios.get("http://localhost:5000/api/v1/item");
   return response.data;
 });
+export const fetchItemById = createAsyncThunk(
+  "items/fetchItemById",
+  async (id) => {
+    const response = await axios.get(`http://localhost:5000/api/v1/item/${id}`);
+    return response.data;
+  }
+);
+
 // Evcil hayvan oluşturma
 export const createItem = createAsyncThunk("items/createItem", async (newItem) => {
   const response = await axios.post(
@@ -14,7 +22,21 @@ export const createItem = createAsyncThunk("items/createItem", async (newItem) =
   );
   return response.data;
 });
-
+export const updateItem = createAsyncThunk(
+  "items/updateItem",
+  async ({ id, updatedData }) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/v1/item/${id}`,
+      updatedData
+    );
+    return response.data;
+  }
+);
+// Evcil hayvan silme
+export const deleteItem = createAsyncThunk("items/deleteItem", async (id) => {
+  await axios.delete(`http://localhost:5000/api/v1/item/${id}`);
+  return id;
+});
 const itemSlice = createSlice({
   name: "items",
   initialState: {
@@ -38,11 +60,26 @@ const itemSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+      .addCase(fetchItemById.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.selectedItem = action.payload;
+      })
       // Evcil hayvan ekleme
       .addCase(createItem.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
-
+      .addCase(updateItem.fulfilled, (state, action) => {
+        const index = state.items.findIndex(
+          (item) => item._id === action.payload._id
+        );
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      })
+      // Evcil hayvan silme
+      .addCase(deleteItem.fulfilled, (state, action) => {
+        state.items = state.items.filter((pet) => pet._id !== action.payload);
+      })
   },
 });
 
