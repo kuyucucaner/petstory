@@ -18,15 +18,20 @@ const ItemList = () => {
 
   if (status === 'loading') return <div>Loading...</div>;
   if (status === 'failed') return <div>Error: {error}</div>;
-
+ 
+  const handleViewDetails = (itemId) => {
+    navigate(`/item/${itemId}`);
+  };
   return (
     <div>
-      <h1>Evcil Hayvanlar</h1>
+      <h1>eşyalar</h1>
       <ul>
         {items.length > 0 ? (
           items.map((item) => (
-            <li key={item._id} onClick={() => navigate(`/items/${item._id}`)}>
+            <li key={item._id}>
               {item.name} - {item.category}
+              <button onClick={() => handleViewDetails(item._id)}>Detayları Gör</button>
+
             </li>
           ))
         ) : (

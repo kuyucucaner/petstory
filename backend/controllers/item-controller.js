@@ -90,55 +90,14 @@ const ItemController = {
       const { id } = req.params;
     
       try {
-        const item = await Item.findById(id);
+        const item = await Item.findByIdAndDelete(id);
         if (!item) {
           return res.status(404).json({ message: 'Item not found' });
         }
-    
-        await item.remove();
+
         res.status(200).json({ message: 'Item deleted successfully' });
       } catch (error) {
         res.status(500).json({ message: 'Error deleting item', error });
-      }
-    },
-    
-    // 6. Fotoğraf ekleme (Add Photo)
-    addPhoto : async function (req, res) {
-      const { id } = req.params;
-      const { url, altText } = req.body;
-    
-      try {
-        const item = await Item.findById(id);
-        if (!item) {
-          return res.status(404).json({ message: 'Item not found' });
-        }
-    
-        // Yeni fotoğraf ekle
-        item.photos.push({ url, altText });
-        const updatedItem = await item.save();
-        res.status(200).json(updatedItem);
-      } catch (error) {
-        res.status(500).json({ message: 'Error adding photo', error });
-      }
-    },
-    
-    // 7. Fotoğraf silme (Delete Photo)
-    deletePhoto : async function (req, res) {
-      const { id, photoId } = req.params;
-    
-      try {
-        const item = await Item.findById(id);
-        if (!item) {
-          return res.status(404).json({ message: 'Item not found' });
-        }
-    
-        // Fotoğrafı sil
-        item.photos = item.photos.filter(photo => photo._id.toString() !== photoId);
-        const updatedItem = await item.save();
-    
-        res.status(200).json(updatedItem);
-      } catch (error) {
-        res.status(500).json({ message: 'Error deleting photo', error });
       }
     },
 };

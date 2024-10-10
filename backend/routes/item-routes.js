@@ -170,66 +170,7 @@
      *         description: Error deleting item
      */
 
-    /**
-     * @swagger
-     * /api/v1/item/{id}/photos:
-     *   post:
-     *     summary: Add a photo to an item
-     *     tags: [Item]
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         schema:
-     *           type: string
-     *         required: true
-     *         description: The item ID
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               url:
-     *                 type: string
-     *               altText:
-     *                 type: string
-     *     responses:
-     *       200:
-     *         description: Photo added successfully
-     *       404:
-     *         description: Item not found
-     *       500:
-     *         description: Error adding photo
-     */
 
-    /**
-     * @swagger
-     * /api/v1/item/{id}/photos/{photoId}:
-     *   delete:
-     *     summary: Delete a photo from an item
-     *     tags: [Item]
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         schema:
-     *           type: string
-     *         required: true
-     *         description: The item ID
-     *       - in: path
-     *         name: photoId
-     *         schema:
-     *           type: string
-     *         required: true
-     *         description: The photo ID
-     *     responses:
-     *       200:
-     *         description: Photo deleted successfully
-     *       404:
-     *         description: Item not found
-     *       500:
-     *         description: Error deleting photo
-     */
 
     // 1. Eşya oluşturma
     router.post('/create', ItemController.createItem);
@@ -246,10 +187,5 @@
     // 5. Eşya silme
     router.delete('/:id', ItemController.deleteItem);
 
-    // 6. Eşyaya fotoğraf ekleme
-    router.post('/:id/photos', ItemController.addPhoto);
-
-    // 7. Eşyadan fotoğraf silme
-    router.delete('/:id/photos/:photoId', ItemController.deletePhoto);
 
     module.exports = router;
