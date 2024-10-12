@@ -8,6 +8,7 @@ import Register from './pages/register';
 import Login from './pages/login';
 import Pet from './pages/pet';
 import Item from './pages/item';
+import Profile from './pages/profile';
 import PetDetail from './pages/pet-detail';
 import ItemDetail from './pages/item-detail';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
+          <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/pet" element={<Pet />} />
           <Route path="/item" element={<Item />} />
           <Route path="/pet/:petId" element={<PetDetail />} />
