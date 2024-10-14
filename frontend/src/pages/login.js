@@ -19,12 +19,17 @@ const Login = () => {
   const { email, password } = formData;
 
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData)); // Login action'ı dispatch ediliyor
+    console.log("Form Data (Email):", email);
+    console.log("Form Data (Password):", password);
+    if (!email || !password) {
+      console.error("Email veya şifre boş olamaz");
+      return; // Eğer email veya şifre boşsa, işlemi durdur
+    }
+    dispatch(loginUser({ email, password }));
   };
-
+  
   useEffect(() => {
     if (isAuthenticated) {
       // Giriş başarılı olduğunda yapılacak işlemler (örneğin yönlendirme)

@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     minlength: 6,
-    select: false // Sorgularda şifreyi getirmemek için
   },
   phone: {
     type: String,
@@ -77,15 +76,21 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-
 userSchema.pre('save', async function (next) {
+  // Eğer şifre değişmemişse ya da yeni bir şifre yoksa işlemi atla
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+  
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    return next(error);
+  }
 });
+
 
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
