@@ -4,6 +4,7 @@ import Navbar from "./components/navbar";
 import ProtectedRoute from "./components/protected-route";
 import UpdatePetForm from "./components/update-pet-form";
 import UpdateItemForm from "./components/update-item-form";
+import UpdateProfileForm from "./components/update-profile-form";
 import Home from "./pages/home";
 import Register from "./pages/register";
 import Login from "./pages/login";
@@ -28,6 +29,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+                 <Route
+              path="/profile/:userId/update"
+              element={
+                <ProtectedRoute>
+                  <UpdateProfileForm />
                 </ProtectedRoute>
               }
             />

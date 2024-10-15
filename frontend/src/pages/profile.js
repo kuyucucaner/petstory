@@ -14,7 +14,7 @@ const Profile = () => {
   }, [dispatch, userId]);
 
   const handleUpdateClick = () => {
-    navigate(`/user/${userId}/update`);
+    navigate(`/profile/${userId}/update`);
   };
   const handleDelete = (userId) => {
     dispatch(deleteUser(userId));

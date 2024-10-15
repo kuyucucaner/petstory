@@ -16,31 +16,44 @@ const UserController = {
       res.status(500).json({ message: 'Error fetching user', error });
     }
   },
-    // Evcil hayvan bilgilerini güncelleme
-    updateUser : async  function (req, res)  {
-        const { id } = req.params;
-        const { email, password, phone, photo, address, dateOfBirth } = req.body;
+  updateUser: async function (req, res) {
+    const { id } = req.params;
+    const { email, password, phone, photo, address, dateOfBirth, firstName, lastName } = req.body;
+  
+    console.log('Request body:', req.body);  // Gelen veriyi kontrol et
+  
+    try {
+      const user = await User.findById(id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Kullanıcı bilgilerini güncelle
+      user.firstName = firstName || user.firstName;
+      user.lastName = lastName || user.lastName;
+      user.email = email || user.email;
+      user.password = password || user.password;
+      user.phone = phone || user.phone;
+      user.photo = photo || user.photo;
+      user.address = address || user.address;
+      user.dateOfBirth = dateOfBirth || user.dateOfBirth;
+  
+      // Güncellenen kullanıcıyı kaydet
+      const updatedUser = await user.save();
       
-        try {
-          const user = await User.findById(id);
-          if (!user) {
-            return res.status(404).json({ message: 'user not found' });
-          }
-      
-          // Evcil hayvan bilgilerini güncelle
-          user.email = email || user.email;
-          user.password = password || user.password;
-          user.phone = phone || user.phone;
-          user.photo = photo || user.photo;
-          user.address = address || user.address;
-          user.dateOfBirth = dateOfBirth || user.dateOfBirth;
-      
-          const updatedUser = await user.save();
-          res.status(200).json(updatedUser);
-        } catch (error) {
-          res.status(500).json({ message: 'Error updating user', error });
-        }
-      },
+      // Eğer güncelleme başarılı değilse loglama yap
+      if (!updatedUser) {
+        return res.status(500).json({ message: 'Error saving updated user' });
+      }
+  
+      console.log('Updated user:', updatedUser); // Başarılı güncelleme
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('Error updating user:', error);  // Hata loglama
+      res.status(500).json({ message: 'Error updating user', error });
+    }
+  },
+  
 
 
   // Soft delete a user (set isDelete to true)

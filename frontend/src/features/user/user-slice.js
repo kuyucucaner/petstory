@@ -1,33 +1,47 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Tek bir evcil hayvanı getirme
+// Tek bir kullanıcıyı getirme
 export const fetchUserById = createAsyncThunk(
-  "users/fetchPetById",
+  "users/fetchUserById",
   async (id) => {
     const response = await axios.get(`http://localhost:5000/api/v1/user/${id}`);
     return response.data;
   }
 );
 
-// Evcil hayvan güncelleme
+// Kullanıcı güncelleme
 export const updateUser = createAsyncThunk(
   "users/updateUser",
-  async ({ id, updatedData }) => {
-    const response = await axios.put(
-      `http://localhost:5000/api/v1/user/${id}`,
-      updatedData
-    );
-    return response.data;
+  async ({ id, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/user/${id}`,
+        updatedData
+      );
+      console.log("Response from server:", response.data);  // Verinin gelip gelmediğini kontrol edin
+      return response.data;
+    } catch (err) {
+      console.error("Update error:", err.response?.data || err.message);
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
 );
-export const deleteUser = createAsyncThunk("users/deleteUser", async (id) => {
+
+
+// Kullanıcı silme
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async (id) => {
     await axios.delete(`http://localhost:5000/api/v1/user/${id}`);
     return id;
-  });
+  }
+);
+
 const userSlice = createSlice({
   name: "users",
   initialState: {
+    users: [], // users state'i burada tanımlanmış
     selectedUser: null,
     status: "idle",
     error: null,
@@ -35,24 +49,29 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Tek bir evcil hayvanı fetch işlemleri
+      // Tek bir kullanıcıyı fetch işlemleri
       .addCase(fetchUserById.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.selectedUser = action.payload;
       })
-      // Evcil hayvan güncelleme
+      // Kullanıcı güncelleme
       .addCase(updateUser.fulfilled, (state, action) => {
-        const index = state.users.findIndex(
-          (user) => user._id === action.payload._id
-        );
+        // Güncelleme başarılı olduğunda
+        const index = state.users.findIndex(user => user._id === action.payload._id);
         if (index !== -1) {
           state.users[index] = action.payload;
         }
       })
-      // Evcil hayvan silme
-      .addCase(deleteUser.fulfilled, (state, action) => {
-        state.users = state.users.filter((pet) => pet._id !== action.payload);
+      .addCase(updateUser.rejected, (state, action) => {
+        // Güncelleme başarısız olduğunda
+        state.error = action.payload || "Güncelleme başarısız oldu.";
       })
+      // Kullanıcı silme
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        if (state.users && state.users.length > 0) {
+          state.users = state.users.filter((user) => user._id !== action.payload);
+        }
+      });
   },
 });
 
