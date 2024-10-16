@@ -32,16 +32,16 @@ const userSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-        default: '',
+    default: '',
     required: false,
-    unique: false, // Artık unique değil
+    unique: true, // Artık unique değil
     trim: true,
     sparse: true, // Telefon numarası olan kullanıcılar için indeksleme yap
   },
   
   role: {
     type: String,
-    enum: ['user', 'admin' , 'guest'],
+    enum: ['user', 'admin' , 'vet' , 'owner'],
     default: 'user'
   },
   photo: {
@@ -53,7 +53,6 @@ const userSchema = new mongoose.Schema({
     city: { type: String, trim: true },
     state: { type: String, trim: true },
     country: { type: String, trim: true },
-    zipCode: { type: String, trim: true }
   },
   dateOfBirth: {
     type: Date
