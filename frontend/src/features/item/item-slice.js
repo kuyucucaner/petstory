@@ -78,7 +78,7 @@ const itemSlice = createSlice({
       })
       // Evcil hayvan silme
       .addCase(deleteItem.fulfilled, (state, action) => {
-        state.items = state.items.filter((pet) => pet._id !== action.payload);
+        state.items = state.items.filter((item) => item._id !== action.payload);
       })
   },
 });

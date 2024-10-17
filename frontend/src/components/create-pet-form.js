@@ -1,41 +1,69 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { createPet } from '../features/pet/pet-slice';
+import { useNavigate } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode'; // JWT'yi çözümlemek için
 
 const CreatePetForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState(null); // Token'dan gelecek kullanıcı ID'si
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Tokeni localStorage'dan alıyoruz
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token); // Token'i decode ediyoruz
+        setUserId(decodedToken.user.id); // user.id'yi ownerId olarak ayarlıyoruz
+      } catch (error) {
+        console.error("Invalid token:", error); // Hataları konsola yazdırıyoruz
+      }
+    } else {
+      console.error("No token found");
+    }
+  }, []);
+
+  // Form verisi
   const [petData, setPetData] = useState({
     name: '',
     species: '',
     breed: '',
     age: '',
     gender: '',
-    ownerId: '',
+    ownerId: '', // Başlangıçta boş, token'dan gelecek
   });
 
-  const [status, setStatus] = useState(null);
-  const [error, setError] = useState(null);
+  useEffect(() => {
+    if (userId) {
+      setPetData((prevData) => ({ ...prevData, ownerId: userId })); // ownerId'yi userId ile güncelle
+    }
+  }, [userId]);
 
   // Form inputlarını handle eden fonksiyon
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
     setPetData({
       ...petData,
-      [name]: value,
+      [e.target.name]: e.target.value,
     });
   };
 
   // Form submit edildiğinde API çağrısı yapan fonksiyon
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Pet Data:', petData); // Gönderilen veriyi kontrol edin
+    
+    if (!userId) {
+      console.error("User ID is missing"); // Eğer userId yoksa hata yazdır
+      return;
+    }
 
+    // Gönderilen veriyi kontrol edin
+    console.log('Pet Data:', petData); // ownerId'yi kontrol edin
     try {
-      setStatus('loading');
-      const response = await axios.post('http://localhost:5000/api/v1/pet/create', petData);
-      setStatus('success');
-      console.log('Evcil hayvan oluşturuldu:', response.data);
+      await dispatch(createPet({ newPet: petData })).unwrap(); // Redux thunk ile createPet dispatch ediyoruz
+      navigate('/pet');  // Başarılı olursa listeye dönmek için yönlendirme
     } catch (error) {
-      setStatus('failed');
-      setError(error.response?.data?.message || 'Bir hata oluştu');
+      console.error('Error creating pet:', error); // Hataları yazdırıyoruz
     }
   };
 
@@ -92,22 +120,16 @@ const CreatePetForm = () => {
           </select>
         </div>
         <div>
-          <label>Sahip ID:</label>
           <input
             type="text"
             name="ownerId"
-            value={petData.ownerId}
-            onChange={handleInputChange}
-            required
+            value={petData.ownerId || ''} // ownerId'yi gösteriyoruz
+            readOnly // Kullanıcı tarafından değiştirilemez yapıyoruz
+            hidden
           />
         </div>
         <button type="submit">Oluştur</button>
       </form>
-
-      {/* Durum mesajları */}
-      {status === 'loading' && <p>Evcil hayvan oluşturuluyor...</p>}
-      {status === 'success' && <p>Evcil hayvan başarıyla oluşturuldu!</p>}
-      {status === 'failed' && <p>Hata: {error}</p>}
     </div>
   );
 };

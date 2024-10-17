@@ -60,7 +60,7 @@ const PetController = {
     // Evcil hayvan bilgilerini güncelleme
     updatePet : async  function (req, res)  {
       const { id } = req.params;
-      const { name, species, breed, age, gender } = req.body;
+      const { name, species, breed, age, gender , isAdopted} = req.body;
     
       try {
         const pet = await Pet.findById(id);
@@ -75,6 +75,7 @@ const PetController = {
         pet.age = age || pet.age;
         pet.gender = gender || pet.gender;
         pet.updatedAt = Date.now();
+        pet.isAdopted = isAdopted || pet.isAdopted;
     
         const updatedPet = await pet.save();
         res.status(200).json(updatedPet);

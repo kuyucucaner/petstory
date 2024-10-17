@@ -58,10 +58,6 @@ const petSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  isDeleted: {
-    type: Boolean,
-    default: false
-  },
 });
 
 petSchema.pre('save', function(next) {
