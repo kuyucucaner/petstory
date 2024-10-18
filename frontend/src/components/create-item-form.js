@@ -1,7 +1,29 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { createItem } from '../features/item/item-slice';
+import { useNavigate } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode'; // JWT'yi çözümlemek için
+
 
 const CreateItemForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Tokeni localStorage'dan alıyoruz
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token); // Token'i decode ediyoruz
+        setUserId(decodedToken.user.id); // user.id'yi ownerId olarak ayarlıyoruz
+      } catch (error) {
+        console.error("Invalid token:", error); // Hataları konsola yazdırıyoruz
+      }
+    } else {
+      console.error("No token found");
+    }
+  }, []);
+
   const [itemData, setItemData] = useState({
     name: '',
     description: '',
@@ -11,31 +33,36 @@ const CreateItemForm = () => {
     owner: '',
   });
 
-  const [status, setStatus] = useState(null);
-  const [error, setError] = useState(null);
+  useEffect(() => {
+    if (userId) {
+      setItemData((prevData) => ({ ...prevData, owner: userId })); // ownerId'yi userId ile güncelle
+    }
+  }, [userId]);
+
 
   // Form inputlarını handle eden fonksiyon
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
     setItemData({
       ...itemData,
-      [name]: value,
+      [e.target.name]: e.target.value,
     });
   };
 
-  // Form submit edildiğinde API çağrısı yapan fonksiyon
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Item Data:', itemData); // Gönderilen veriyi kontrol edin
+    
+    if (!userId) {
+      console.error("User ID is missing"); // Eğer userId yoksa hata yazdır
+      return;
+    }
 
+    // Gönderilen veriyi kontrol edin
+    console.log('Item Data:', itemData); // ownerId'yi kontrol edin
     try {
-      setStatus('loading');
-      const response = await axios.post('http://localhost:5000/api/v1/item/create', itemData);
-      setStatus('success');
-      console.log('Eşya oluşturuldu:', response.data);
+      await dispatch(createItem({ newItem: itemData })).unwrap(); // Redux thunk ile createPet dispatch ediyoruz
+      navigate('/item');  // Başarılı olursa listeye dönmek için yönlendirme
     } catch (error) {
-      setStatus('failed');
-      setError(error.response?.data?.message || 'Bir hata oluştu');
+      console.error('Error creating pet:', error); // Hataları yazdırıyoruz
     }
   };
 
@@ -94,22 +121,18 @@ const CreateItemForm = () => {
           />
         </div>
         <div>
-          <label>Sahip ID:</label>
           <input
             type="text"
             name="owner"
             value={itemData.owner}
             onChange={handleInputChange}
-            required
+            hidden
           />
         </div>
         <button type="submit">Oluştur</button>
       </form>
 
-      {/* Durum mesajları */}
-      {status === 'loading' && <p>Eşya oluşturuluyor...</p>}
-      {status === 'success' && <p>Eşya başarıyla oluşturuldu!</p>}
-      {status === 'failed' && <p>Hata: {error}</p>}
+
     </div>
   );
 };

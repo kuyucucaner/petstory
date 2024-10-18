@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchItemById , deleteItem } from '../features/item/item-slice';
 import { useParams ,useNavigate } from 'react-router-dom';
 
-const PetDetail = () => {
+const ItemDetail = () => {
   const { itemId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const PetDetail = () => {
   };
   const handleDelete = (itemId) => {
     dispatch(deleteItem(itemId));
+    navigate('/item');
   };
 
   return (
@@ -36,4 +37,4 @@ const PetDetail = () => {
   );
 };
 
-export default PetDetail;
+export default ItemDetail;

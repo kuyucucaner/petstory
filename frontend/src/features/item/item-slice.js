@@ -15,7 +15,7 @@ export const fetchItemById = createAsyncThunk(
 );
 
 // Evcil hayvan oluşturma
-export const createItem = createAsyncThunk("items/createItem", async (newItem) => {
+export const createItem = createAsyncThunk("items/createItem", async ({ newItem }) => {
   const response = await axios.post(
     "http://localhost:5000/api/v1/item/create",
     newItem

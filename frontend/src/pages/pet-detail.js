@@ -19,6 +19,8 @@ const PetDetail = () => {
   };
   const handleDelete = (petId) => {
     dispatch(deletePet(petId));
+    navigate('/pet');
+
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
