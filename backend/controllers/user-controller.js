@@ -18,10 +18,11 @@ const UserController = {
   },
   updateUser: async function (req, res) {
     const { id } = req.params;
-    const { email, password, phone, photo, address, dateOfBirth, firstName, lastName } = req.body;
+    const { email, password, phone, address, dateOfBirth, firstName, lastName } = req.body;
   
     console.log('Request body:', req.body);  // Gelen veriyi kontrol et
-  
+    console.log('File:', req.file);  // Yüklenen dosyayı kontrol edin
+
     try {
       const user = await User.findById(id);
       if (!user) {
@@ -32,12 +33,25 @@ const UserController = {
       user.firstName = firstName || user.firstName;
       user.lastName = lastName || user.lastName;
       user.email = email || user.email;
-      user.password = password || user.password;
+      if (password) {
+        user.password = password;  // Şifre değiştirildi, pre-save hook çalışacak
+        user.markModified('password');  // Şifre değiştirildiğini belirtiyoruz
+      }
       user.phone = phone || user.phone;
-      user.photo = photo || user.photo;
       user.address = address || user.address;
       user.dateOfBirth = dateOfBirth || user.dateOfBirth;
-  
+          // Dosya yüklendiyse eski dosyayı silin (isteğe bağlı)
+          // if (req.file) {
+          //   Eski fotoğraf dosyasını sil (isteğe bağlı)
+          //   if (user.photo && fs.existsSync(user.photo)) {
+          //     fs.unlinkSync(user.photo);  // Eski dosya var mı kontrol et ve sil
+          //   }
+          //   user.photo = req.file.path;  // Yeni dosyanın yolunu kaydedin
+          // }
+    
+      if (req.file) {
+        user.photo = req.file.path;  // Fotoğrafın dosya yolunu kaydedin
+      }
       // Güncellenen kullanıcıyı kaydet
       const updatedUser = await user.save();
       

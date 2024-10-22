@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/user-controller');
+const multer = require('multer');
 
 /**
  * @swagger
@@ -113,11 +114,23 @@ const UserController = require('../controllers/user-controller');
  *         description: Error deleting user
  */
 
+// Dosya yükleme ayarları
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');  // Yüklemeler için bir klasör
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname);  // Benzersiz dosya adı
+    }
+  });
+  
+  const upload = multer({ storage: storage });
+
+  // Update user by ID
+  router.put('/:id', upload.single('photo'),UserController.updateUser);
 // Get user by ID
 router.get('/:id', UserController.getUserById);
 
-// Update user by ID
-router.put('/:id', UserController.updateUser);
 
 // Delete user by ID
 router.delete('/:id', UserController.deleteUser);

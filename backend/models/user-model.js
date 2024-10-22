@@ -24,7 +24,9 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
+    match: [/\S+@\S+\.\S+/, 'is invalid']  // Regex validation for email
+
   },
   password: {
     type: String,
@@ -34,9 +36,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: '',
     required: false,
-    unique: true, // Artık unique değil
     trim: true,
-    sparse: true, // Telefon numarası olan kullanıcılar için indeksleme yap
+    sparse: true,
+    validate: {
+      validator: function(v) {
+        return /\d{10}/.test(v); // Simple phone number validation
+      },
+      message: props => `${props.value} is not a valid phone number!`
+    }
   },
   
   role: {
