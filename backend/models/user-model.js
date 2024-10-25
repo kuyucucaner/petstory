@@ -56,10 +56,10 @@ const userSchema = new mongoose.Schema({
     default: 'default.jpg'
   },
   address: {
-    street: { type: String, trim: true },
-    city: { type: String, trim: true },
-    state: { type: String, trim: true },
-    country: { type: String, trim: true },
+    street: { type: String, trim: true , default: ''},
+    city: { type: String, trim: true, default: '' },
+    state: { type: String, trim: true ,default: '' },
+    country: { type: String, trim: true ,default: ''},
   },
   dateOfBirth: {
     type: Date

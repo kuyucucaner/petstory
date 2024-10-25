@@ -40,11 +40,10 @@ const UpdateProfileForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith('address')) {
-      const field = name.split('.')[1];
+    if (name === 'street' || name === 'city' || name === 'state' || name === 'country') {
       setUserData({
         ...userData,
-        address: { ...userData.address, [field]: value },
+        address: { ...userData.address, [name]: value },
       });
     } else {
       setUserData({
@@ -53,6 +52,7 @@ const UpdateProfileForm = () => {
       });
     }
   };
+  
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -68,10 +68,7 @@ const UpdateProfileForm = () => {
     formData.append('lastName', userData.lastName);
     formData.append('email', userData.email);
     formData.append('phone', userData.phone);
-    formData.append('address.street', userData.address.street);
-    formData.append('address.city', userData.address.city);
-    formData.append('address.state', userData.address.state);
-    formData.append('address.country', userData.address.country);
+    formData.append('address', JSON.stringify(userData.address));
     formData.append('dateOfBirth', userData.dateOfBirth);
 
     // Eğer bir dosya seçildiyse FormData'ya ekle
@@ -133,28 +130,28 @@ const UpdateProfileForm = () => {
         <div>
           <input
             type="text"
-            name="address.street"
+            name="street"
             placeholder="Sokak"
             value={userData.address.street}
             onChange={handleChange}
           />
           <input
             type="text"
-            name="address.city"
+            name="city"
             placeholder="Şehir"
             value={userData.address.city}
             onChange={handleChange}
           />
           <input
             type="text"
-            name="address.state"
+            name="state"
             placeholder="Eyalet"
             value={userData.address.state}
             onChange={handleChange}
           />
           <input
             type="text"
-            name="address.country"
+            name="country"
             placeholder="Ülke"
             value={userData.address.country}
             onChange={handleChange}
