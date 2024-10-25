@@ -1,6 +1,8 @@
     const express = require('express');
     const router = express.Router();
     const ItemController = require('../controllers/item-controller');
+    const upload = require('../config/multer'); // multer.js dosyasından import edin
+
     /**
      * @swagger
      * components:
@@ -173,7 +175,7 @@
 
 
     // 1. Eşya oluşturma
-    router.post('/create', ItemController.createItem);
+    router.post('/create', upload.array('photo', 5), ItemController.createItem);
 
     // 2. Tüm eşyaları listeleme
     router.get('/', ItemController.getAllItems);
@@ -182,7 +184,7 @@
     router.get('/:id', ItemController.getItemById);
 
     // 4. Eşya güncelleme
-    router.put('/:id', ItemController.updateItem);
+    router.put('/:id',upload.single('photo'),ItemController.updateItem);
 
     // 5. Eşya silme
     router.delete('/:id', ItemController.deleteItem);

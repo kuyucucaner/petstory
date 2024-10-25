@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/user-controller');
-const multer = require('multer');
-const sanitize = require('sanitize-filename'); // sanitize-filename modülünü kullanın
+const upload = require('../config/multer'); // multer.js dosyasından import edin
 
 /**
  * @swagger
@@ -114,18 +113,6 @@ const sanitize = require('sanitize-filename'); // sanitize-filename modülünü 
  *       500:
  *         description: Error deleting user
  */
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    const sanitizedFileName = sanitize(Date.now() + '-' + file.originalname);
-    cb(null, sanitizedFileName);
-  }
-});
-
-const upload = multer({ storage: storage });
   // Update user by ID
   router.put('/:id', upload.single('photo'),UserController.updateUser);
 // Get user by ID

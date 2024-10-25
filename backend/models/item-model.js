@@ -34,17 +34,10 @@ const itemSchema = new mongoose.Schema({
     ref: 'User', // Kullanıcı modeli ile ilişkilendiriyoruz
     required: true
   },
-  photos: [
-    {
-      url: {
-        type: String,
-        required: false
-      },
-      altText: {
-        type: String
-      }
-    }
-  ],
+  photo: {
+    type: [String], // Fotoğraf alanını bir dizi olarak ayarladık
+    default: ['default.jpg'] // Varsayılan fotoğrafı bir dizi olarak belirledik
+  },
   createdAt: {
     type: Date,
     default: Date.now

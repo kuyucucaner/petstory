@@ -3,8 +3,11 @@ const User = require('../models/user-model');
 
 const ItemController = {
     // 1. Yeni bir eşya ekleme (Create)
-    createItem : async function (req, res) {
-      const { name, description, category, condition, price, owner, photos } = req.body;
+    createItem: async function (req, res) {
+      const { name, description, category, condition, price, owner } = req.body;
+    
+      // Fotoğrafların dosya yolunu almak için req.files kullanıyoruz
+      const photoPaths = req.files ? req.files.map(file => file.path) : []; 
     
       try {
         // Kullanıcının olup olmadığını kontrol et
@@ -21,7 +24,7 @@ const ItemController = {
           condition,
           price,
           owner,
-          photos
+          photo: photoPaths // Dosya yollarını 'photo' dizisine ekle
         });
     
         const savedItem = await newItem.save();
@@ -30,6 +33,8 @@ const ItemController = {
         res.status(500).json({ message: 'Error creating item', error });
       }
     },
+    
+    
     
     // 2. Tüm eşyaları listeleme (Read All)
     getAllItems : async function (req, res) {

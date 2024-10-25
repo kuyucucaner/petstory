@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createItem } from '../features/item/item-slice';
 import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode'; // JWT'yi çözümlemek için
-
+import {jwtDecode} from 'jwt-decode';
 
 const CreateItemForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userId, setUserId] = useState(null);
-  useEffect(() => {
-    const token = localStorage.getItem("token"); // Tokeni localStorage'dan alıyoruz
+  const [selectedFiles, setSelectedFiles] = useState([]); // Birden fazla dosya için dizi olarak ayarladık
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
     if (token) {
       try {
-        const decodedToken = jwtDecode(token); // Token'i decode ediyoruz
-        setUserId(decodedToken.user.id); // user.id'yi ownerId olarak ayarlıyoruz
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.user.id);
       } catch (error) {
-        console.error("Invalid token:", error); // Hataları konsola yazdırıyoruz
+        console.error("Invalid token:", error);
       }
     } else {
       console.error("No token found");
@@ -35,41 +35,62 @@ const CreateItemForm = () => {
 
   useEffect(() => {
     if (userId) {
-      setItemData((prevData) => ({ ...prevData, owner: userId })); // ownerId'yi userId ile güncelle
+      setItemData((prevData) => ({ ...prevData, owner: userId }));
     }
   }, [userId]);
 
-
-  // Form inputlarını handle eden fonksiyon
   const handleInputChange = (e) => {
     setItemData({
       ...itemData,
       [e.target.name]: e.target.value,
     });
   };
-
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    const validFiles = files.filter(
+      (file) => file.type.startsWith("image/") && file.size < 5 * 1024 * 1024 // max 5MB
+    );
+    if (validFiles.length !== files.length) {
+      console.error("Some files were invalid and not selected.");
+    }
+    setSelectedFiles(validFiles);
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (!userId) {
-      console.error("User ID is missing"); // Eğer userId yoksa hata yazdır
+      console.error("User ID is missing");
       return;
     }
-
-    // Gönderilen veriyi kontrol edin
-    console.log('Item Data:', itemData); // ownerId'yi kontrol edin
+  
+    const formData = new FormData();
+    formData.append('name', itemData.name);
+    formData.append('description', itemData.description);
+    formData.append('category', itemData.category);
+    formData.append('condition', itemData.condition);
+    formData.append('price', itemData.price);
+    formData.append('owner', itemData.owner);
+  
+    // Birden fazla fotoğraf ekleme
+    selectedFiles.forEach((file, index) => {
+      formData.append(`photo`, file); // Dosyaları photos olarak ekle
+    });
+  
     try {
-      await dispatch(createItem({ newItem: itemData })).unwrap(); // Redux thunk ile createPet dispatch ediyoruz
-      navigate('/item');  // Başarılı olursa listeye dönmek için yönlendirme
+      dispatch(createItem(formData))
+      .unwrap()
+      .then(() => navigate('/item'))
+      .catch((error) => console.error("Error creating item:", error));
     } catch (error) {
-      console.error('Error creating pet:', error); // Hataları yazdırıyoruz
+      console.error("Error creating item:", error);
     }
   };
-
+  
   return (
     <div>
       <h1>Eşya Oluştur</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div>
           <label>İsim:</label>
           <input
@@ -91,7 +112,7 @@ const CreateItemForm = () => {
           />
         </div>
         <div>
-        <label>Kategori:</label>
+          <label>Kategori:</label>
           <select name="category" value={itemData.category} onChange={handleInputChange} required>
             <option value="">Kategori Seç</option>
             <option value="bed">bed</option>
@@ -108,9 +129,8 @@ const CreateItemForm = () => {
             <option value="new">new</option>
             <option value="used">used</option>
           </select>
-        </div>  
-        
-              <div>
+        </div>
+        <div>
           <label>Fiyat:</label>
           <input
             type="number"
@@ -121,18 +141,16 @@ const CreateItemForm = () => {
           />
         </div>
         <div>
+          <label>Fotoğraf:</label>
           <input
-            type="text"
-            name="owner"
-            value={itemData.owner}
-            onChange={handleInputChange}
-            hidden
+            type="file"
+            name="photos"
+            multiple // Birden fazla dosya seçilmesini sağlamak için multiple ekledik
+            onChange={handleFileChange}
           />
         </div>
         <button type="submit">Oluştur</button>
       </form>
-
-
     </div>
   );
 };
