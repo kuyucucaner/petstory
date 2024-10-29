@@ -184,7 +184,7 @@
     router.get('/:id', ItemController.getItemById);
 
     // 4. Eşya güncelleme
-    router.put('/:id',upload.single('photo'),ItemController.updateItem);
+    router.put('/:id',upload.array('photo', 5),ItemController.updateItem);
 
     // 5. Eşya silme
     router.delete('/:id', ItemController.deleteItem);

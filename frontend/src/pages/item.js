@@ -29,7 +29,13 @@ const ItemList = () => {
         {items.length > 0 ? (
           items.map((item) => (
             <li key={item._id}>
-              {item.name} - {item.category}
+            <img
+  src={`http://localhost:5000/${item.photo[0]}`}
+  alt={`asas`}
+  style={{ width: '200px', height: '200px' }} // Example styling
+  crossorigin='anonymous' 
+/>
+            {item.name} - {item.category}
               <button onClick={() => handleViewDetails(item._id)}>Detayları Gör</button>
 
             </li>

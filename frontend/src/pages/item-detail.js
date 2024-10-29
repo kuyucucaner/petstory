@@ -26,8 +26,23 @@ const ItemDetail = () => {
       {selectedItem ? (
         <div>
           <h2>{selectedItem.name} Detayları</h2>
-          <p>Kategori: {selectedItem.category}</p>
-          <button onClick={() => handleDelete(itemId)}>Sil</button>
+          <p>{selectedItem.category}</p>
+          <p>{selectedItem.description}</p>
+          <p>{selectedItem.condition}</p>
+          <p>{selectedItem.price}</p>
+          <p>{selectedItem.owner.firstName}</p>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            {selectedItem.photo.slice(0, 6).map((photoUrl, index) => (
+              <img
+                key={index}
+                src={`http://localhost:5000/${photoUrl}`}
+                alt={`Photos ${index + 1}`}
+                style={{ width: '200px', height: '200px' }}
+                crossOrigin="anonymous"
+              />
+            ))}
+          </div>
+                     <button onClick={() => handleDelete(itemId)}>Sil</button>
           <button onClick={handleUpdateClick}>Güncelle</button>
         </div>
       ) : (
