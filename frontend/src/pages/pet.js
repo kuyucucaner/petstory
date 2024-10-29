@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPets  } from '../features/pet/pet-slice';
 import { useNavigate } from 'react-router-dom';
-
 import CreatePetForm from '../components/create-pet-form';
 
 const PetList = () => {
@@ -29,6 +28,12 @@ const PetList = () => {
       <ul>
         {pets.map((pet) => (
           <li key={pet._id}>
+                        <img
+  src={`http://localhost:5000/${pet.photo[0]}`}
+  alt={`asas`}
+  style={{ width: '200px', height: '200px' }} // Example styling
+  crossorigin='anonymous' 
+/>
             {pet.name} - {pet.species}
             <button onClick={() => handleViewDetails(pet._id)}>Detayları Gör</button>
 

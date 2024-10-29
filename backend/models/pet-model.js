@@ -50,6 +50,10 @@ const petSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  photo: {
+    type: [String], // Fotoğraf alanını bir dizi olarak ayarladık
+    default: ['default.jpg'] // Varsayılan fotoğrafı bir dizi olarak belirledik
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -56,6 +56,18 @@ const PetDetail = () => {
               <p>Bu evcil hayvan için tıbbi kayıt bulunamadı.</p>
             )}
           </ul>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            {selectedPet.photo.slice(0, 6).map((photoUrl, index) => (
+              <img
+                key={index}
+                src={`http://localhost:5000/${photoUrl}`}
+                alt={`Photos ${index + 1}`}
+                style={{ width: '200px', height: '200px' }}
+                crossOrigin="anonymous"
+              />
+            ))}
+          </div>
+          
           <h3>Yeni Tıbbi Kayıt Ekle</h3>
           <form onSubmit={(e) => e.preventDefault()}>
             <label>
