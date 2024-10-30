@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const PetController = require('../controllers/pet-controller');
+const upload = require('../config/multer'); // multer.js dosyasından import edin
 
 /**
  * @swagger
@@ -240,7 +241,7 @@ const PetController = require('../controllers/pet-controller');
  */
 
 // Pet oluşturma
-router.post('/create', PetController.createPet);
+router.post('/create', upload.array('photo', 5), PetController.createPet);
 
 // Tüm petleri listeleme
 router.get('/', PetController.getAllPets);

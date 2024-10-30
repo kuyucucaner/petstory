@@ -1,12 +1,14 @@
 const Pet = require('../models/pet-model');
 const User = require('../models/user-model'); // Eğer kullanıcıya referans veriyorsan
+const fs = require('fs');
 
 // Evcil hayvan oluşturma
 const PetController = {
 
     createPet : async function (req, res) {
       const { name, species, breed, age, gender, ownerId } = req.body;
-    
+      const photoPaths = req.files ? req.files.map(file => file.path.replace(/\\/g, '/')) : []; // Fotoğraf yollarını düzelt
+
       try {
         // Kullanıcının olup olmadığını kontrol et
         const user = await User.findById(ownerId);
@@ -21,7 +23,9 @@ const PetController = {
           breed,
           age,
           gender,
-          ownerId
+          ownerId,
+          photo: photoPaths // Dosya yollarını 'photo' dizisine ekle
+
         });
     
         const savedPet = await newPet.save();

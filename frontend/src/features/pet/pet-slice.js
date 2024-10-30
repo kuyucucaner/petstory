@@ -16,16 +16,14 @@ export const fetchPetById = createAsyncThunk(
   }
 );
 
-export const createPet = createAsyncThunk("pets/createPet", async ({ newPet }) => {
-  try {
-    const response = await axios.post("http://localhost:5000/api/v1/pet/create", newPet); // newPet'in doğrudan gönderilmesi
-    return response.data;
-  } catch (error) {
-    console.error('Axios request failed:', error.response ? error.response.data : error.message);
-    throw error;
-  }
+export const createPet = createAsyncThunk("pets/createPet", async (newPet) => {
+  const response = await axios.post(
+    "http://localhost:5000/api/v1/pet/create",
+    newPet,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+  return response.data;
 });
-
 
 // Evcil hayvan güncelleme
 export const updatePet = createAsyncThunk(
