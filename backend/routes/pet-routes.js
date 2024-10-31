@@ -250,7 +250,7 @@ router.get('/', PetController.getAllPets);
 router.get('/:id', PetController.getPetById);
 
 // Pet'i güncelleme
-router.put('/:id', PetController.updatePet);
+router.put('/:id', upload.array('photo', 5), PetController.updatePet);
 
 // Pet'i silme
 router.delete('/:id', PetController.deletePet);

@@ -65,7 +65,8 @@ const PetController = {
     updatePet : async  function (req, res)  {
       const { id } = req.params;
       const { name, species, breed, age, gender , isAdopted} = req.body;
-    
+      const photoPaths = req.files ? req.files.map(file => file.path.replace(/\\/g, '/')) : [];
+
       try {
         const pet = await Pet.findById(id);
         if (!pet) {
@@ -80,8 +81,27 @@ const PetController = {
         pet.gender = gender || pet.gender;
         pet.updatedAt = Date.now();
         pet.isAdopted = isAdopted || pet.isAdopted;
+        // Fotoğraf güncelleme işlemi
+        if (photoPaths.length > 0) {
+          // İlk fotoğrafı koruma ve yalnızca 5 fotoğraf limitine kadar fotoğraf ekleme
+          let currentPhotos = pet.photo || [];
+          
+          // İlk fotoğraf sabit kalacak, yeni fotoğraflar mevcut diziye eklenmeli
+          const maxPhotos = 5;
+          if (currentPhotos.length >= maxPhotos) {
+            return res.status(400).json({ message: 'Fotoğraf limiti dolu. Yeni fotoğraf eklemek için mevcut fotoğraflardan birini silin.' });
+          }
     
+          // Sadece ilk fotoğrafı koruyarak diğer boş alanlara yeni fotoğrafları ekleyin
+          const existingPhotos = [currentPhotos[0], ...photoPaths.slice(0, maxPhotos - currentPhotos.length)];
+          currentPhotos = [...existingPhotos, ...currentPhotos.slice(existingPhotos.length)];
+          
+          // Güncellenmiş fotoğraf dizisini ayarla
+          pet.photo = currentPhotos.slice(0, maxPhotos); // 5 fotoğrafla sınırlı kalır
+        }
+        
         const updatedPet = await pet.save();
+        console.log('Updated pet : ', updatedPet);
         res.status(200).json(updatedPet);
       } catch (error) {
         res.status(500).json({ message: 'Error updating pet', error });
