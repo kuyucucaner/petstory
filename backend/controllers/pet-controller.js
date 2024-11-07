@@ -60,7 +60,39 @@ const PetController = {
         res.status(500).json({ message: 'Error fetching pet', error });
       }
     },
+
+    getPetsBySpecies: async function (req, res) {
+      const species = req.params.species;
     
+      console.log(`Species received: ${species}`); // Kategori değerini kontrol et
+    
+      try {
+        const pets = await Pet.find({ species: species });
+    
+        if (pets.length === 0) {
+          return res.status(404).json({ message: 'No pets found for this species.' });
+        }
+    
+        return res.status(200).json(pets);
+      } catch (error) {
+        console.error('Error fetching items:', error); // Hata mesajını konsola yazdır
+        return res.status(500).json({ message: 'Server error.', error: error.message }); // Hata mesajını döndür
+      }
+    },
+    getPetsByOwnerRole : async function (req, res){
+      const { role } = req.params; // URL parametresinden role alınıyor
+      try {
+        const pets = await Pet.find()
+          .populate({ path: 'ownerId', match: { role: role } })
+          .exec();
+    
+        const filteredPets = pets.filter(pet => pet.ownerId !== null);
+        res.status(200).json(filteredPets);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: `An error occurred while fetching pets for ${role} role` });
+      }
+    },
     // Evcil hayvan bilgilerini güncelleme
     updatePet : async  function (req, res)  {
       const { id } = req.params;

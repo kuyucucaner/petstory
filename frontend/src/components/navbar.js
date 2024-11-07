@@ -28,22 +28,28 @@ const Navbar = () => {
 
         <ul className="nav-menu">
           <li className="nav-item">
-            <Link to="/login" className="nav-links">
-              Login
-            </Link>
             <Link to="/pet" className="nav-links">
-              pet
+              Pet
             </Link>
             <Link to="/item" className="nav-links">
-              item
+              Item
             </Link>
+        
             {userId ? (
-              <Link to={`/profile/${userId}`} className="nav-links">
-                profile
-              </Link>
-            ) : (
-              <span className="nav-links">profile</span> // Eğer userId yoksa link gösterilmesin
-            )}
+  <Link to={`/profile/${userId}`} className="nav-links">
+    Profile
+  </Link>
+) : (
+  <>
+    <Link to="/login" className="nav-links">
+      Login
+    </Link>
+    <Link to="/register" className="nav-links">
+      Register
+    </Link>
+  </>
+)}
+
           </li>
         </ul>
       </div>

@@ -17,6 +17,7 @@ const UserController = {
       res.status(500).json({ message: 'Error fetching user', error });
     }
   },
+  
   updateUser: async function (req, res) {
     const { id } = req.params;
     const { email, password, phone, address, dateOfBirth, firstName, lastName } = req.body;

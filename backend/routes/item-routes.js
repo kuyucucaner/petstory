@@ -122,6 +122,35 @@
      *         description: Error fetching item
      */
 
+/**
+ * @swagger
+ * /api/v1/item/category/{category}:
+ *   get:
+ *     summary: Get items by category
+ *     tags: [Item]
+ *     parameters:
+ *       - in: path
+ *         name: category
+ *         required: true
+ *         description: The category of the items to retrieve
+ *         schema:
+ *           type: string
+ *           enum: [bed, toy, food bowl, leash, other]
+ *     responses:
+ *       200:
+ *         description: A list of items
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Item'
+ *       404:
+ *         description: No items found for this category
+ *       500:
+ *         description: Server error
+ */
+
     /**
      * @swagger
      * /api/v1/item/{id}:
@@ -173,7 +202,34 @@
      */
 
 
-
+/**
+ * @swagger
+ * /api/v1/item/owner/{role}:
+ *   get:
+ *     summary: Get items by role
+ *     tags: [Item]
+ *     parameters:
+ *       - in: path
+ *         name: role
+ *         required: true
+ *         description: Role for items
+ *         schema:
+ *           type: string
+ *           enum: [vet, owner ,user]
+ *     responses:
+ *       200:
+ *         description: A list of items
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Item'
+ *       404:
+ *         description: No item found for this role
+ *       500:
+ *         description: Server error
+ */
     // 1. Eşya oluşturma
     router.post('/create', upload.array('photo', 5), ItemController.createItem);
 
@@ -182,6 +238,10 @@
 
     // 3. Eşya ID'ye göre getirme
     router.get('/:id', ItemController.getItemById);
+
+    router.get('/category/:category', ItemController.getItemsByCategory);
+
+    router.get('/owner/:role', ItemController.getItemsByOwnerRole);
 
     // 4. Eşya güncelleme
     router.put('/:id',upload.array('photo', 5),ItemController.updateItem);

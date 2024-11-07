@@ -239,7 +239,62 @@ const upload = require('../config/multer'); // multer.js dosyasından import edi
  *       500:
  *         description: Error deleting medical record
  */
-
+/**
+ * @swagger
+ * /api/v1/pet/species/{species}:
+ *   get:
+ *     summary: Get pets by species
+ *     tags: [Pet]
+ *     parameters:
+ *       - in: path
+ *         name: species
+ *         required: true
+ *         description: The species of the pets to retrieve
+ *         schema:
+ *           type: string
+ *           enum: [dog, cat, bird, rabbit, other]
+ *     responses:
+ *       200:
+ *         description: A list of pets
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Pet'
+ *       404:
+ *         description: No pet found for this species
+ *       500:
+ *         description: Server error
+ */
+/**
+ * @swagger
+ * /api/v1/pet/owner/{role}:
+ *   get:
+ *     summary: Get pets by role
+ *     tags: [Pet]
+ *     parameters:
+ *       - in: path
+ *         name: role
+ *         required: true
+ *         description: Role for pets
+ *         schema:
+ *           type: string
+ *           enum: [vet, owner]
+ *     responses:
+ *       200:
+ *         description: A list of pets
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Pet'
+ *       404:
+ *         description: No pet found for this role
+ *       500:
+ *         description: Server error
+ */
 // Pet oluşturma
 router.post('/create', upload.array('photo', 5), PetController.createPet);
 
@@ -248,6 +303,10 @@ router.get('/', PetController.getAllPets);
 
 // Pet'i ID'ye göre getirme
 router.get('/:id', PetController.getPetById);
+
+router.get('/species/:species', PetController.getPetsBySpecies);
+
+router.get('/owner/:role', PetController.getPetsByOwnerRole);
 
 // Pet'i güncelleme
 router.put('/:id', upload.array('photo', 5), PetController.updatePet);
