@@ -177,6 +177,31 @@ const ItemController = {
       res.status(500).json({ message: "Error deleting item", error });
     }
   },
+  searchItems : async function (searchQuery) {
+    const regex = new RegExp(searchQuery, 'i');
+    const itemResults = await Item.find({
+      $or: [
+        { name: regex },
+        { description: regex },
+        { category: regex },
+        { condition: regex },
+      ]
+    });
+    return itemResults;
+  },
+  
+  getItemSearchResults: async function (req, res) {
+    const { query } = req.query;
+    try {
+        const itemResults = await ItemController.searchItems(query);
+        console.log("Item Results : ", itemResults);
+        res.status(200).json(itemResults);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while searching for items' });
+    }
+  }
+  
 };
 
 module.exports = ItemController;

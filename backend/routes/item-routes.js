@@ -230,6 +230,35 @@
  *       500:
  *         description: Server error
  */
+/**
+ * @swagger
+ * /api/v1/item/search:
+ *   get:
+ *     summary: "Search items"
+ *     tags: [Item]
+ *     description: "Searches for items based on a query string that matches name , descrition , category or condition"
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: "The search term for finding items."
+ *     responses:
+ *       200:
+ *         description: "List of items matching the search query"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Item'
+ *       500:
+ *         description: "An error occurred while searching for items"
+ */
+
+
+router.get('/search', ItemController.getItemSearchResults);
     // 1. Eşya oluşturma
     router.post('/create', upload.array('photo', 5), ItemController.createItem);
 

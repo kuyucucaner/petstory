@@ -295,6 +295,35 @@ const upload = require('../config/multer'); // multer.js dosyasından import edi
  *       500:
  *         description: Server error
  */
+/**
+ * @swagger
+ * /api/v1/pet/search:
+ *   get:
+ *     summary: "Search pets by name, species, breed, or age"
+ *     tags: [Pet]
+ *     description: "Searches for pets based on a query string that matches name, species, breed, or age."
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: "The search term for finding pets."
+ *     responses:
+ *       200:
+ *         description: "List of pets matching the search query"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Pet'
+ *       500:
+ *         description: "An error occurred while searching for pets"
+ */
+
+
+router.get('/search', PetController.getPetSearchResults);
 // Pet oluşturma
 router.post('/create', upload.array('photo', 5), PetController.createPet);
 

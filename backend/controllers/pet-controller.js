@@ -208,6 +208,29 @@ deleteMedicalRecord: async function (req, res) {
     res.status(500).json({ message: 'Error deleting medical record', error });
   }
 },
+ searchPets : async function (searchQuery) {
+  const regex = new RegExp(searchQuery, 'i');
+  const petResults = await Pet.find({
+    $or: [
+      { name: regex },
+      { species: regex },
+      { breed: regex },
+    ]
+  });
+  return petResults;
+},
+
+getPetSearchResults: async function (req, res) {
+  const { query } = req.query;
+  try {
+      const petResults = await PetController.searchPets(query);
+      console.log("Pet Results : ", petResults);
+      res.status(200).json(petResults);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred while searching for pets' });
+  }
+}
 
 };
 
