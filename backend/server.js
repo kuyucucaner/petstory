@@ -18,11 +18,13 @@ require('./config/google-passport');
 
 // Routes References
 const registerRoutes = require('./routes/register-routes');
+const searchRoutes = require('./routes/search-routes');
 const loginRoutes = require('./routes/login-routes');
 const googleRoutes = require('./routes/google-routes');
 const petRoutes = require('./routes/pet-routes');
 const itemRoutes = require('./routes/item-routes');
 const userRoutes = require('./routes/user-routes');
+const mailRoutes = require('./routes/mail-routes');
 
 // Database connection
 connectDB();
@@ -81,6 +83,8 @@ app.use('/api/v1/login', loginRoutes);
 app.use('/api/v1/pet', petRoutes);
 app.use('/api/v1/item', itemRoutes);
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/search', searchRoutes);
+app.use('/api/v1/mail', mailRoutes);
 app.use(googleRoutes);
 
 // Swagger documentation route

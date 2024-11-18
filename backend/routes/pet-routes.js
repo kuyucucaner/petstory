@@ -301,14 +301,28 @@ const upload = require('../config/multer'); // multer.js dosyasından import edi
  *   get:
  *     summary: "Search pets by name, species, breed, or age"
  *     tags: [Pet]
- *     description: "Searches for pets based on a query string that matches name, species, breed, or age."
+ *     description: "Searches for pets based on various query parameters like name, species, breed, and age."
  *     parameters:
  *       - in: query
- *         name: query
- *         required: true
+ *         name: name
  *         schema:
  *           type: string
- *         description: "The search term for finding pets."
+ *         description: "The name of the pet to search for."
+ *       - in: query
+ *         name: species
+ *         schema:
+ *           type: string
+ *         description: "The species of the pet to search for (e.g., dog, cat)."
+ *       - in: query
+ *         name: breed
+ *         schema:
+ *           type: string
+ *         description: "The breed of the pet to search for."
+ *       - in: query
+ *         name: age
+ *         schema:
+ *           type: integer
+ *         description: "The age of the pet to search for."
  *     responses:
  *       200:
  *         description: "List of pets matching the search query"
@@ -322,8 +336,8 @@ const upload = require('../config/multer'); // multer.js dosyasından import edi
  *         description: "An error occurred while searching for pets"
  */
 
-
 router.get('/search', PetController.getPetSearchResults);
+
 // Pet oluşturma
 router.post('/create', upload.array('photo', 5), PetController.createPet);
 

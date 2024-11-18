@@ -236,14 +236,28 @@
  *   get:
  *     summary: "Search items"
  *     tags: [Item]
- *     description: "Searches for items based on a query string that matches name , descrition , category or condition"
+ *     description: "Searches for items based on a query string that matches name, description, category, or condition."
  *     parameters:
  *       - in: query
- *         name: query
- *         required: true
+ *         name: name
  *         schema:
  *           type: string
- *         description: "The search term for finding items."
+ *         description: "The name of the item to search for."
+ *       - in: query
+ *         name: description
+ *         schema:
+ *           type: string
+ *         description: "The description of the item to search for."
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: "The category of the item to search for."
+ *       - in: query
+ *         name: condition
+ *         schema:
+ *           type: string
+ *         description: "The condition of the item to search for."
  *     responses:
  *       200:
  *         description: "List of items matching the search query"
@@ -257,8 +271,8 @@
  *         description: "An error occurred while searching for items"
  */
 
-
 router.get('/search', ItemController.getItemSearchResults);
+
     // 1. Eşya oluşturma
     router.post('/create', upload.array('photo', 5), ItemController.createItem);
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {jwtDecode} from 'jwt-decode'; // JWT'yi çözümlemek için
 import "../styles/navbar.css";
-
+import SearchComponent from "../components/search";
 const Navbar = () => {
   // localStorage'deki tokeni al
   const token = localStorage.getItem("token"); // localStorage'dan tokeni al
@@ -27,7 +27,10 @@ const Navbar = () => {
         </Link>
 
         <ul className="nav-menu">
+        <SearchComponent />
+
           <li className="nav-item">
+
             <Link to="/pet" className="nav-links">
               Pet
             </Link>

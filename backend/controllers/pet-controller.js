@@ -208,29 +208,41 @@ deleteMedicalRecord: async function (req, res) {
     res.status(500).json({ message: 'Error deleting medical record', error });
   }
 },
- searchPets : async function (searchQuery) {
-  const regex = new RegExp(searchQuery, 'i');
-  const petResults = await Pet.find({
-    $or: [
-      { name: regex },
-      { species: regex },
-      { breed: regex },
-    ]
-  });
+searchPets: async function (filters) {
+  // Dinamik bir sorgu nesnesi oluşturuyoruz
+  const query = {};
+
+  // Sadece belirtilen filtreleri sorguya ekliyoruz
+  if (filters.name) {
+    query.name = new RegExp(filters.name, 'i');
+  }
+  if (filters.species) {
+    query.species = new RegExp(filters.species, 'i');
+  }
+  if (filters.breed) {
+    query.breed = new RegExp(filters.breed, 'i');
+  }
+
+  // Filtrelenmiş sorguyu Pet koleksiyonuna gönderiyoruz
+  const petResults = await Pet.find(query);
   return petResults;
 },
 
 getPetSearchResults: async function (req, res) {
-  const { query } = req.query;
+  // Filtreleme kriterlerini req.query'den alıyoruz
+  const filters = req.query;
+
   try {
-      const petResults = await PetController.searchPets(query);
-      console.log("Pet Results : ", petResults);
-      res.status(200).json(petResults);
+    // Filtreleri kullanarak searchPets fonksiyonunu çağırıyoruz
+    const petResults = await PetController.searchPets(filters);
+    console.log("Pet Results: ", petResults);
+    res.status(200).json(petResults);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'An error occurred while searching for pets' });
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while searching for pets' });
   }
 }
+
 
 };
 
