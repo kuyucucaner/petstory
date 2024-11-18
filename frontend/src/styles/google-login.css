@@ -1,0 +1,19 @@
+.google-image {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: none;
+    object-fit: contain;
+    transition: transform 0.3s ease; /* Smooth büyüme efekti */
+}
+
+.google-login-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Smooth büyüme efekti */
+}
+
+.google-login-button:hover {
+    transform: scale(1.1); 
+}

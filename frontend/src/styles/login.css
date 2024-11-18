@@ -1,0 +1,132 @@
+/* Genel Ayarlar */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #e7f9d9, #c7f2c1); /* Ferah yeşil degrade */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #2f3e46;
+  }
+  
+  /* Ana Konteyner */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Kart Stili */
+  .login-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  
+  /* Kart Başlığı */
+  .login-title {
+    margin-bottom: 1.5rem;
+    color: #2f5233; /* Orman yeşili */
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Form Stili */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  /* Girdi Alanları */
+  .form-input-email {
+    padding: 12px 15px;
+    border: 1px solid #a3c593; /* Pastel yeşil ton */
+    border-radius: 8px;
+    font-size: 16px;
+    opacity: 0.7; /* İkonun opaklığını ayarlayın */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: url('../images/email.png') no-repeat left center;
+    background-size: 16px 16px; /* İkon boyutunu ayarlayın */
+    padding-left: 35px; /* İkonun alanını bırakmak için */
+    background-position: 10px center; /* 10px soldan, ortada ikon */
+    box-sizing: border-box; /* Border ve padding'in input'un toplam genişliğini etkilememesi için */
+  } 
+   .form-input-password {
+    padding: 12px 15px;
+    border: 1px solid #a3c593; /* Pastel yeşil ton */
+    border-radius: 8px;
+    font-size: 16px;
+    opacity: 0.7; /* İkonun opaklığını ayarlayın */
+
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: url('../images/locked-computer.png') no-repeat left center;
+    background-size: 16px 16px; /* İkon boyutunu ayarlayın */
+    padding-left: 35px; /* İkonun alanını bırakmak için */
+    background-position: 10px center; /* 10px soldan, ortada ikon */
+    box-sizing: border-box; /* Border ve padding'in input'un toplam genişliğini etkilememesi için */
+  }
+  .form-input-email:focus , .form-input-password:focus{
+    outline: none;
+    border-color: #64a064; /* Daha canlı bir yeşil */
+    box-shadow: 0 0 8px rgba(100, 160, 100, 0.5);
+    opacity: 1;
+  }
+  
+  /* Giriş Butonu */
+  .form-button {
+    padding: 12px 15px;
+    font-size: 16px;
+    color: #ffffff;
+    background: #40916c; /* Daha koyu yeşil */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .form-button:hover {
+    background: #2d6a4f; /* Daha koyu ve derin yeşil */
+    transform: scale(1.03); /* Hafif büyüme efekti */
+  }
+  
+  .form-button:disabled {
+    background: #a3c593; /* Soluk yeşil */
+    cursor: not-allowed;
+  }
+  
+  /* Hata Mesajı */
+  .error-message {
+    color: #d62828; /* Kırmızımsı ton: dikkat çekici */
+    margin-top: 1rem;
+    font-size: 14px;
+  }
+  
+  /* Google Giriş Alanı */
+  .google-login-section {
+    margin-top: 2rem;
+  }
+
+  
+  /* Giriş Kartı İçin Animasyon */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
