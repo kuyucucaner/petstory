@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../features/auth/auth-slice';
 import GoogleLoginButton from '../components/google-login-button';  // Google butonunu ekledik
 import '../styles/login.css';
+import { Link } from 'react-router-dom';
+
 const Login = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
@@ -71,6 +73,9 @@ const Login = () => {
           <button type="submit" disabled={loading} className="form-button">
             {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
           </button>
+          <button type="button" className="form-button-register">
+  <Link to="/register" className="button-link">Kayıt Ol</Link>
+</button>
           {error && <p className="error-message">{error}</p>}
         </form>
         <div className="google-login-section">
