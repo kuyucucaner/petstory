@@ -118,6 +118,68 @@ const upload = require('../config/multer'); // multer.js dosyasından import edi
 // Get user by ID
 router.get('/:id', UserController.getUserById);
 
+/**
+ * @swagger
+ * /api/v1/user/password-reset/request:
+ *   post:
+ *     summary: Request a password reset
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The email of the user requesting the reset
+ *                 format: email
+ *     responses:
+ *       200:
+ *         description: Password reset link sent
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+
+/**
+ * @swagger
+ * /api/v1/user/password-reset/confirm/{token}:
+ *   post:
+ *     summary: Reset password using the provided token
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The password reset token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 description: The new password
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: Password reset successfully
+ *       400:
+ *         description: Invalid or expired token
+ *       500:
+ *         description: Server error
+ */
+
+router.post('/password-reset/request', UserController.passwordReset);
+
+router.post('/password-reset/confirm/:token', UserController.passwordResetToken);
 
 // Delete user by ID
 router.delete('/:id', UserController.deleteUser);

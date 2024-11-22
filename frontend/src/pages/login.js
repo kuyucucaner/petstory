@@ -80,7 +80,8 @@ const Login = () => {
         </form>
         <div className="google-login-section">
           <GoogleLoginButton />
-        </div>
+        <Link to="/reset-password-request" className='reset-password-request'>Şifremi Unuttum</Link>
+          </div>
       </div>
     </div>
   );
