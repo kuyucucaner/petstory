@@ -1,6 +1,7 @@
 // src/features/auth/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../utils/axios-config';
+import axios from "axios";
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
@@ -28,11 +29,25 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+export const verifyRecaptcha = createAsyncThunk(
+  "recaptcha/verify",
+  async (captchaValue, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("http://localhost:5000/verify-captcha", {
+        captchaValue,
+      });
+      return response.data; // Backend'den gelen yanıt
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "CAPTCHA doğrulama hatası"); 
+    }
+  }
+);
 
 // Initial state
 const initialState = {
   token: localStorage.getItem('token') || null,
   isAuthenticated: false,
+  isVerified: false,
   loading: false,
   error: null,
 };
@@ -75,6 +90,18 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Giriş başarısız';
+      })
+      .addCase(verifyRecaptcha.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyRecaptcha.fulfilled, (state) => {
+        state.loading = false;
+        state.isVerified = true;
+      })
+      .addCase(verifyRecaptcha.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message || "CAPTCHA doğrulaması başarısız.";
       });
   },
 });

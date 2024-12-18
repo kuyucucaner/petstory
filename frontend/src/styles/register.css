@@ -1,121 +1,127 @@
-/* Genel Ayarlar */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #333;
-  }
-  
-  /* Ana Konteyner */
-  .register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
-  
-  /* Kart Stili */
-  .register-card {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    animation: fadeIn 0.8s ease-in-out;
 
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-card {
+  background: #fff;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+
+.register-title {
+  margin-bottom: 1.5rem;
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+  border-bottom: 1px solid #aaaaaa50;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  width: 90%;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #c68b3d;
+  box-shadow: 0 0 5px rgba(255, 149, 0, 0.5);
+}
+.password-strength{
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+.form-input.zayıf {
+  border-color: red;
+  background-color: #fdecea;
+}
+
+.form-input.orta {
+  border-color: orange;
+  background-color: #fff8e1;
+}
+
+.form-input.güçlü {
+  border-color: green;
+  background-color: #e8f5e9;
+}
+
+.form-input.match {
+  border-color: green;
+}
+
+.form-input.no-match {
+  border-color: red;
+}
+
+.form-button,
+.form-button-login {
+  padding: 12px 15px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.form-button {
+  background: #1976d2;
+}
+
+.form-button:hover {
+  background: #1565c0;
+}
+
+.form-button:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+}
+
+.form-button-login {
+  margin-top: 5px;
+  background: #9aa411;
+  text-decoration: none;
+}
+
+.form-button-login:hover {
+  background: #aab61a;
+}
+
+/* ===== HATA MESAJLARI ===== */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 1rem;
+}
+
+/* ===== ANİMASYON ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  /* Başlık */
-  .register-title {
-    margin-bottom: 1.5rem;
-    font-size: 24px;
-    color: #333;
-    font-weight: bold;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Form */
-  .register-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  /* Input */
-  .form-input {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-  }
-  
-  .form-input:focus {
-    outline: none;
-    border-color: #42a5f5;
-    box-shadow: 0 0 5px rgba(66, 165, 245, 0.5);
-  }
-  .button-link {
-    text-decoration: none;
-    color: white; /* Buton yazı rengi */
-    display: block;
-    text-align: center;
-  }
-  /* Buton */
-  .form-button {
-    padding: 12px 15px;
-    font-size: 16px;
-    color: #fff;
-    background: #1976d2;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  .form-button-login{
-    margin-top: 5px;
-    padding: 12px 15px;
-    font-size: 16px;
-    color: #fff;
-    background: #c6d219;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  .form-button:hover {
-    background: #1565c0;
-  }
-  
-  .form-button:disabled {
-    background: #bbb;
-    cursor: not-allowed;
-  }
-  
-  /* Hata Mesajı */
-  .error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 1rem;
-  }
-  
-  /* Fade In Animasyonu */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
+}

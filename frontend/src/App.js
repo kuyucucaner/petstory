@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "./components/navbar";
 import ProtectedRoute from "./components/protected-route";
 import UpdatePetForm from "./components/update-pet-form";
 import UpdateItemForm from "./components/update-item-form";
@@ -15,13 +14,13 @@ import Item from "./pages/item";
 import Profile from "./pages/profile";
 import PetDetail from "./pages/pet-detail";
 import ItemDetail from "./pages/item-detail";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/scroll-bar.css';
 function App() {
   return (
     <Router>
       <div>
         <main>
-          {/* <Navbar /> */}
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

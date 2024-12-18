@@ -1,0 +1,18 @@
+footer {
+    background: #343a40;
+    color: #f8f9fa;
+  }
+  
+  footer a:hover {
+    color: #ffc107;
+  }
+  
+  footer h5 {
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+  
+  footer ul li {
+    margin-bottom: 8px;
+  }
+  

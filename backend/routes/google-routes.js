@@ -1,9 +1,9 @@
 const express = require('express');
 const passport = require('passport');
 const { googleAuthCallback , logout } = require('../controllers/google-contoller');
-
+const recaptcha = require('../config/recaptcha');
 const router = express.Router();
-
+const rateLimit = require('../config/rate-limit');
 
 // Google OAuth giriş rotası
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -15,6 +15,7 @@ router.get(
   googleAuthCallback
 );
 
+router.post('/verify-captcha' , rateLimit ,recaptcha);
 // Çıkış işlemi
 router.get('/logout', logout);
 

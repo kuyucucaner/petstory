@@ -1,8 +1,9 @@
 .navbar {
-    background-color: #1d5b11;
+    background-color: #fff1cf;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 80px;
   }
   
   .navbar-container {
@@ -13,8 +14,10 @@
   }
   
   .navbar-logo {
-    color: #fff;
+    color: #010101;
     justify-self: start;
+    font-weight: bold;
+    letter-spacing: 2px;
     margin-left: 2em;
     cursor: pointer;
     text-decoration: none;
@@ -23,24 +26,27 @@
   }
   .nav-item{
     display: flex;
+    
   }
   .nav-menu {
+    margin-bottom: auto;
     display: flex;
     list-style: none;
+    align-items: center;
+    justify-content: center;
     text-align: center;
   }
   
-
   .nav-links {
-    color: #fff;
+    color: #000000;
     text-decoration: none;
     padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
-  }
-  
-  .nav-links:hover {
-    background-color: #575757;
-    border-radius: 4px;
-  }
-  
+    font-weight: bold;
+    transition: transform 0.3s ease; /* Animasyon ekliyoruz */
+}
+
+.nav-links:hover {
+    transform: scale(1.1); /* Üzerine gelindiğinde büyüt */
+}

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchItems } from '../features/search/search-slice';
-
+import '../styles/search.css';
 const SearchComponent = () => {
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
@@ -14,20 +14,21 @@ const SearchComponent = () => {
   };
 
   return (
-    <div>
+    <div className='search-container'>
       <form onSubmit={handleSearch}>
         <input
           type="text"
           placeholder="Search..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          className='search-input'
         />
-        <button type="submit">Search</button>
+        <button type="submit" className='search-button'>F</button>
       </form>
       
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-
+{/* 
       <div>
         <h2>Items</h2>
         {results.items.length ? (
@@ -49,7 +50,7 @@ const SearchComponent = () => {
         ) : (
           <p>No pets found.</p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

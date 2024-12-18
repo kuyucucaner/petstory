@@ -1,15 +1,4 @@
-/* Genel Ayarlar */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #e7f9d9, #c7f2c1); /* Ferah yeşil degrade */
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #2f3e46;
-  }
+
   
   /* Ana Konteyner */
   .login-container {
@@ -18,6 +7,8 @@ body {
     align-items: center;
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
   }
   .button-link {
     text-decoration: none;
@@ -130,9 +121,17 @@ body {
   /* Google Giriş Alanı */
   .google-login-section {
     margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 2em;
   }
 
-  
+  .reset-password-request-link{
+    text-decoration: none;
+    color: blue;
+    padding-left: 15px;
+  }
   /* Giriş Kartı İçin Animasyon */
   @keyframes fadeIn {
     from {
