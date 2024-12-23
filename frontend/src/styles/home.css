@@ -27,12 +27,12 @@
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-.card {
+.home-number-card {
   border-radius: 10px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   padding: 1rem;
 }
-.card:hover {
+.home-number-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }

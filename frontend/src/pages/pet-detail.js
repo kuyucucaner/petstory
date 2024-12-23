@@ -1,14 +1,32 @@
-import React, { useEffect , useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPetById , deletePet , addMedicalRecord , deleteMedicalRecord} from '../features/pet/pet-slice';
-import { useParams ,useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPetById, deletePet } from "../features/pet/pet-slice";
+import { useParams, useNavigate } from "react-router-dom";
+import "../styles/pet-detail.css";
+import NavbarComponent from "../components/navbar";
+import { jwtDecode } from "jwt-decode"; // JWT'yi çözümlemek için
+
+// Helper function to extract userId from token
+const getUserIdFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      return decodedToken?.user?.id || null;
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
+  return null;
+};
 
 const PetDetail = () => {
   const { petId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { selectedPet} = useSelector((state) => state.pet);
-  const [newRecord, setNewRecord] = useState({ visitDate: '', notes: '', vet: '' });
+  const { selectedPet } = useSelector((state) => state.pet);
+
+  const userId = getUserIdFromToken();
 
   useEffect(() => {
     dispatch(fetchPetById(petId));
@@ -17,94 +35,90 @@ const PetDetail = () => {
   const handleUpdateClick = () => {
     navigate(`/pet/${petId}/update`);
   };
-  const handleDelete = (petId) => {
-    dispatch(deletePet(petId));
-    navigate('/pet');
 
-  };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewRecord({ ...newRecord, [name]: value });
-  };
-  const handleAddRecord = () => {
-    dispatch(addMedicalRecord({ petId, medicalRecord: newRecord }));
-    setNewRecord({ visitDate: '', notes: '', vet: '' }); // Formu temizle
-  };
-  const handleDeleteRecord = (recordId) => {
-    dispatch(deleteMedicalRecord({ petId, recordId }));
+  const handleDelete = () => {
+    dispatch(deletePet(petId));
+    navigate("/pet");
   };
 
   return (
     <div>
-      {selectedPet ? (
-        <div>
-          <h2>{selectedPet.name} Detayları</h2>
-          <p>Tür: {selectedPet.species}</p>
-          <p>Yaş: {selectedPet.age}</p>
-          <p>Açıklama: {selectedPet.description}</p>
-          <h3>Tıbbi Kayıtlar</h3>
-          <ul>
-            {selectedPet.medicalRecords && selectedPet.medicalRecords.length > 0 ? (
-              selectedPet.medicalRecords.map((record, index) => (
-                <li key={index}>
-                  {record.visitDate} - {record.notes} (Vet: {record.vet})
-                  <button onClick={() => handleDeleteRecord(record._id)}>Sil</button>
+      <NavbarComponent />
+      <div className="container my-5">
+        {selectedPet ? (
+          <div>
+            <h2 className="text-center mb-4">{selectedPet.name} Detayları</h2>
+            <div className="card shadow p-4">
+              <h5>Genel Bilgiler</h5>
+              <p>
+                <strong>Tür:</strong> {selectedPet.species}
+              </p>
+              <p>
+                <strong>Yaş:</strong> {selectedPet.age}
+              </p>
+              <p>
+                <strong>Açıklama:</strong> {selectedPet.description}
+              </p>
 
-                </li>
-              ))
-            ) : (
-              <p>Bu evcil hayvan için tıbbi kayıt bulunamadı.</p>
-            )}
-          </ul>
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            {selectedPet.photo.slice(0, 6).map((photoUrl, index) => (
-              <img
-                key={index}
-                src={`http://localhost:5000/${photoUrl}`}
-                alt={`Photos ${index + 1}`}
-                style={{ width: '200px', height: '200px' }}
-                crossOrigin="anonymous"
-              />
-            ))}
+              <h5 className="mt-4">Tıbbi Kayıtlar</h5>
+              <ul className="list-group mb-3">
+                {selectedPet.medicalRecords?.length > 0 ? (
+                  selectedPet.medicalRecords.map((record, index) => (
+                    <li
+                      key={index}
+                      className="list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      <div>
+                        {record.visitDate} - {record.notes} (Vet: {record.vet})
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <li className="list-group-item">
+                    Bu evcil hayvan için tıbbi kayıt bulunamadı.
+                  </li>
+                )}
+              </ul>
+
+              <h5 className="mt-4">Fotoğraflar</h5>
+              <div className="d-flex flex-wrap gap-3 mb-4">
+                {selectedPet.photo?.slice(0, 6).map((photoUrl, index) => (
+                  <img
+                    key={index}
+                    src={`http://localhost:5000/${photoUrl}`}
+                    alt={`Photo ${index + 1}`}
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                    }}
+                    crossOrigin="anonymous"
+                  />
+                ))}
+              </div>
+
+              {userId && (
+                <div className="d-flex justify-content-between">
+                  <button className="btn btn-danger" onClick={handleDelete}>
+                    Sil
+                  </button>
+                  <button
+                    className="btn btn-warning"
+                    onClick={handleUpdateClick}
+                  >
+                    Güncelle
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-          
-          <h3>Yeni Tıbbi Kayıt Ekle</h3>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <label>
-              Ziyaret Tarihi:
-              <input
-                type="date"
-                name="visitDate"
-                value={newRecord.visitDate}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Notlar:
-              <input
-                type="text"
-                name="notes"
-                value={newRecord.notes}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Veteriner:
-              <input
-                type="text"
-                name="vet"
-                value={newRecord.vet}
-                onChange={handleInputChange}
-              />
-            </label>
-            <button onClick={handleAddRecord}>Tıbbi Kayıt Ekle</button>
-          </form>
-          <button onClick={() => handleDelete(petId)}>Sil</button>
-          <button onClick={handleUpdateClick}>Güncelle</button>
-        </div>
-      ) : (
-        <p>Detaylar yükleniyor...</p>
-      )}
+        ) : (
+          <div className="text-center">
+            <p>Detaylar yükleniyor...</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -6,6 +6,8 @@ import UpdateItemForm from "./components/update-item-form";
 import UpdateProfileForm from "./components/update-profile-form";
 import ResetPaswordForm from "./components/reset-password-form";
 import ResetPaswordRequest from "./components/reset-password-request";
+import CreatePet from "./components/create-pet-form";
+import CreateItem from "./components/create-item-form";
 import Home from "./pages/home";
 import Register from "./pages/register";
 import Login from "./pages/login";
@@ -42,6 +44,16 @@ function App() {
               }
             />
             <Route path="/pet" element={<Pet />} />
+            <Route path="/create-pet" element={
+                        <ProtectedRoute>
+                      <CreatePet />
+                      </ProtectedRoute>
+             } />      
+                <Route path="/create-item" element={
+                        <ProtectedRoute>
+                      <CreateItem />
+                      </ProtectedRoute>
+             } />
             <Route path="/item" element={<Item />} />
             <Route path="/reset-password-request" element={< ResetPaswordRequest />} />
             <Route path="/reset-password-form/:token" element={< ResetPaswordForm />} />
