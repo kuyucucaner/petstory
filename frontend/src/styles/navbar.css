@@ -46,7 +46,3 @@
     font-weight: bold;
     transition: transform 0.3s ease; /* Animasyon ekliyoruz */
 }
-
-.nav-links:hover {
-    transform: scale(1.1); /* Üzerine gelindiğinde büyüt */
-}
